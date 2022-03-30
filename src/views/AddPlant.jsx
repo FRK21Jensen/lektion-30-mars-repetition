@@ -1,19 +1,24 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { PlantsContext } from '../App';
 import Button from '../Components/Button';
 
 export default function AddPlant() {
     const { plants, setPlants } = useContext(PlantsContext);
-
     const [newPlant, setNewPlant] = useState({
-        id: plants.length,
+        id: 0,
         name: "",
         sunCravings: 0
     });
 
+    //fixen för att få in rätt id
+    //problemet var att vår komponent inte fick in datan från useContext innan den moutnades
+    //så om vi istället lyssnar på när vår komponents state newPlant ändras och då uppsaterar id't efter
+    //vår contexts plant length, så har vår contexts hunnit laddats in
+    useEffect(() => {
+        setNewPlant({...newPlant, id: plants.length})
+    }, [newPlant])
+
     function handleAddClick() {
-        const id = plants.length;
-        setNewPlant({ ...newPlant, id: id });
         //här hinner vi inte uppdatera newPlant's id innan vi vill uppdatera plant
         setPlants(plants => [...plants, newPlant]);
     }
