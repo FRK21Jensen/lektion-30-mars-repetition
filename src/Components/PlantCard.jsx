@@ -1,10 +1,16 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function PlantCard(props) {
-    console.log(props.plant);
     const plant = props.plant;
+    const navigate = useNavigate();
+
+    function handleClick() {
+        navigate('/plant', {state:{plant}});
+    };
+
     return (
-        <article>
+        <article onClick={handleClick}>
             <h3>{plant.name}</h3>
             <p>Sun needs: {plant.sunCravings}/10</p>
         </article>
